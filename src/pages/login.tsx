@@ -30,7 +30,7 @@ export const Login = () => {
 
   const onCompleted = (data: LoginMutation) => {
     const {
-      login: { ok, error, token },
+      login: { ok, token },
     } = data;
     if (ok) {
       console.log(token);
@@ -38,7 +38,7 @@ export const Login = () => {
   };
 
   // codegen을 활용한 type 검증
-  const [loginMutation, { data: loginMutationResult }] = useMutation<
+  const [loginMutation, { data: loginMutationResult, loading }] = useMutation<
     LoginMutation,
     LoginMutationVariables
   >(LOGIN_MUTATION, {
@@ -46,16 +46,19 @@ export const Login = () => {
   });
 
   const onSubmit = () => {
-    const { email, password } = getValues();
-    /* mutation에 변수추가하기 */
-    loginMutation({
-      variables: {
-        loginInput: {
-          email,
-          password,
+    /* 프론트엔드에서 로그인 버튼을 1번만 클릭하게 설정(로딩중이 아닐때 만 해당 로직 진행) */
+    if (!loading) {
+      const { email, password } = getValues();
+      /* mutation에 변수추가하기 */
+      loginMutation({
+        variables: {
+          loginInput: {
+            email,
+            password,
+          },
         },
-      },
-    });
+      });
+    }
   };
 
   return (
@@ -100,7 +103,9 @@ export const Login = () => {
             /* Function을 통한 error 처리하는 방법  */
             <FormError errorMessage="Password must be more than 10 chars." />
           )}
-          <button className="btn mt-3">Log In</button>
+          <button className="btn mt-3">
+            {loading ? 'Loading...' : 'Log In'}
+          </button>
           {loginMutationResult?.login.error && (
             <FormError errorMessage={loginMutationResult.login.error} />
           )}
