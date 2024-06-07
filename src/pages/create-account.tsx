@@ -5,7 +5,7 @@ import { gql, useMutation } from '@apollo/client';
 import nuberLogo from '../images/logo.svg';
 import { Button } from '../components/button';
 import { Link, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 import {
   CreateAccountMutation,
@@ -52,6 +52,8 @@ export const CreateAccount = () => {
       createAccount: { ok, error },
     } = data;
     if (ok) {
+      /* 로그인 페이지로 이동했다는 것을 알려주기 */
+      alert('Account Created! Log in now!');
       navigate('/', { replace: true });
     }
   };
@@ -163,7 +165,7 @@ export const CreateAccount = () => {
         </form>
         <div>
           Already have an account?{' '}
-          <Link to="/login" className="text-lime-600 hover:underline">
+          <Link to="/" className="text-lime-600 hover:underline">
             Log in now
           </Link>
         </div>

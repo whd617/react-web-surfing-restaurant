@@ -6,8 +6,9 @@ import { LoginMutation, LoginMutationVariables } from '../gql/graphql';
 import nuberLogo from '../images/logo.svg';
 import { Button } from '../components/button';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
-import { isLoggedInVar } from '../apollo';
+import { Helmet } from 'react-helmet-async';
+import { authToken, isLoggedInVar } from '../apollo';
+import { LOCALSTORAGE_TOKEN } from '../constants';
 
 /* mutation 적용하기 */
 const LOGIN_MUTATION = gql`
@@ -39,9 +40,12 @@ export const Login = () => {
     const {
       login: { ok, token },
     } = data;
-    if (ok) {
-      console.log(token);
-      // login후 token 받고 로그인 허용
+    if (ok && token) {
+      // localStorage에 token 설정
+      localStorage.setItem(LOCALSTORAGE_TOKEN, token);
+      // authToken: reactiv variable(apollo.ts)에 token을 업데이트
+      authToken(token);
+      // isLoggedInVar: reactiv variable(apollo.ts)도 업데이트
       isLoggedInVar(true);
     }
   };
