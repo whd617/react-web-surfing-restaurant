@@ -3,6 +3,9 @@ import { useForm } from 'react-hook-form';
 import { FormError } from '../components/form-error';
 import { gql, useMutation } from '@apollo/client';
 import { LoginMutation, LoginMutationVariables } from '../gql/graphql';
+import nuberLogo from '../images/logo.svg';
+import { Button } from '../components/button';
+import { Link } from 'react-router-dom';
 
 /* mutation 적용하기 */
 const LOGIN_MUTATION = gql`
@@ -24,9 +27,11 @@ export const Login = () => {
   const {
     register,
     getValues,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
-  } = useForm<ILoginForm>();
+  } = useForm<ILoginForm>({
+    mode: 'onBlur',
+  });
 
   const onCompleted = (data: LoginMutation) => {
     const {
@@ -62,12 +67,16 @@ export const Login = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-800">
-      <div className="bg-white w-full max-w-lg pt-10 pb-7 rounded-lg text-center">
-        <h3 className=" text-3xl text-gray-800">Log in</h3>
+    <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
+      {/*  login 화면 CSS설정(핸드폰) */}
+      <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
+        <img src={nuberLogo} className="w-52 mb-5" />
+        <h4 className="font-medium w-full text-left text-3xl mb-10 ">
+          Welcome back
+        </h4>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="grid gap-3 mt-5 px-5"
+          className="grid gap-3 mt-5 w-full mb-5"
         >
           <input
             {...register('email', { required: 'Email is required' })}
@@ -75,7 +84,7 @@ export const Login = () => {
             name="email"
             type="email"
             placeholder="Eamil"
-            className="input "
+            className="input"
           />
 
           {errors.email?.message && (
@@ -103,13 +112,17 @@ export const Login = () => {
             /* Function을 통한 error 처리하는 방법  */
             <FormError errorMessage="Password must be more than 10 chars." />
           )}
-          <button className="btn mt-3">
-            {loading ? 'Loading...' : 'Log In'}
-          </button>
+          <Button canClick={isValid} loading={loading} actionText={'Log in'} />
           {loginMutationResult?.login.error && (
             <FormError errorMessage={loginMutationResult.login.error} />
           )}
         </form>
+        <div>
+          New to nuber?{' '}
+          <Link to="/create-account" className="text-lime-600 hover:underline">
+            Crate an Account
+          </Link>
+        </div>
       </div>
     </div>
   );
