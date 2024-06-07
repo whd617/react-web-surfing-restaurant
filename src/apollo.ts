@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache, makeVar } from '@apollo/client';
 
+// reactive variable
 export const isLoggedInVar = makeVar(false);
 
 export const client = new ApolloClient({

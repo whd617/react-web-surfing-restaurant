@@ -6,6 +6,8 @@ import { LoginMutation, LoginMutationVariables } from '../gql/graphql';
 import nuberLogo from '../images/logo.svg';
 import { Button } from '../components/button';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { isLoggedInVar } from '../apollo';
 
 /* mutation 적용하기 */
 const LOGIN_MUTATION = gql`
@@ -39,6 +41,8 @@ export const Login = () => {
     } = data;
     if (ok) {
       console.log(token);
+      // login후 token 받고 로그인 허용
+      isLoggedInVar(true);
     }
   };
 
@@ -68,6 +72,9 @@ export const Login = () => {
 
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
+      <Helmet>
+        <title>Login | NuberEats</title>
+      </Helmet>
       {/*  login 화면 CSS설정(핸드폰) */}
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
         <img src={nuberLogo} className="w-52 mb-5" />
@@ -79,7 +86,11 @@ export const Login = () => {
           className="grid gap-3 mt-5 w-full mb-5"
         >
           <input
-            {...register('email', { required: 'Email is required' })}
+            {...register('email', {
+              required: 'Email is required',
+              pattern:
+                /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            })}
             required
             name="email"
             type="email"
@@ -91,7 +102,10 @@ export const Login = () => {
             /* Function을 통한 error 처리하는 방법  */
             <FormError errorMessage={errors.email?.message} />
           )}
-
+          {errors.email?.type === 'pattern' && (
+            /* Function을 통한 error 처리하는 방법  */
+            <FormError errorMessage={'Please enter a valid email'} />
+          )}
           <input
             {...register('password', {
               required: 'Password is required',
