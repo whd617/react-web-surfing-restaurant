@@ -1,6 +1,4 @@
 import React from 'react';
-import { gql, useQuery } from '@apollo/client';
-import { MeQuery, MeQueryVariables } from '../gql/graphql';
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,24 +6,14 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { Restaurants } from '../pages/client/restaurants';
+import { Header } from '../components/header';
+import { useMe } from '../hooks/useMe';
 
 const ClientRoutes = [<Route path="/" element={<Restaurants />} />];
 
-const ME_QUERY = gql`
-  query me {
-    me {
-      id
-      email
-      role
-      verified
-    }
-  }
-`;
-
 export const LoggedInRouter = () => {
-  const { data, loading, error } = useQuery<MeQuery, MeQueryVariables>(
-    ME_QUERY,
-  );
+  /* hook을 활용한 user data 사용 */
+  const { data, loading, error } = useMe();
   /* 데이터가 없거나 로딩중이거나 에러가 있으면 if문 진행 */
   if (!data || loading || error) {
     return (
@@ -36,9 +24,10 @@ export const LoggedInRouter = () => {
   }
   return (
     <Router>
+      <Header />
       <Routes>
         {data.me.role === 'Client' && ClientRoutes}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
