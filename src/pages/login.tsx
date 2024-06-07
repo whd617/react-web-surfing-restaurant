@@ -7,7 +7,7 @@ import nuberLogo from '../images/logo.svg';
 import { Button } from '../components/button';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { authToken, isLoggedInVar } from '../apollo';
+import { authTokenVar, isLoggedInVar } from '../apollo';
 import { LOCALSTORAGE_TOKEN } from '../constants';
 
 /* mutation 적용하기 */
@@ -44,7 +44,7 @@ export const Login = () => {
       // localStorage에 token 설정
       localStorage.setItem(LOCALSTORAGE_TOKEN, token);
       // authToken: reactiv variable(apollo.ts)에 token을 업데이트
-      authToken(token);
+      authTokenVar(token);
       // isLoggedInVar: reactiv variable(apollo.ts)도 업데이트
       isLoggedInVar(true);
     }
