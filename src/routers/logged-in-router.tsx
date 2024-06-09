@@ -8,8 +8,17 @@ import {
 import { Restaurants } from '../pages/client/restaurants';
 import { Header } from '../components/header';
 import { useMe } from '../hooks/useMe';
+import { NotFound } from '../pages/404';
+import { ConfirmEmail } from '../pages/user/confirm-email';
+import { EditProfile } from '../pages/user/edit-profile';
 
-const ClientRoutes = [<Route path="/" element={<Restaurants />} />];
+/* Route를 다수 지정할 때 key값 기입 */
+const ClientRoutes = [
+  <Route key={1} path="/" element={<Restaurants />} />,
+  /* confirm page 생성 */
+  <Route key={2} path="/confirm" element={<ConfirmEmail />} />,
+  <Route key={3} path="/edit-profile" element={<EditProfile />} />,
+];
 
 export const LoggedInRouter = () => {
   /* hook을 활용한 user data 사용 */
@@ -27,7 +36,8 @@ export const LoggedInRouter = () => {
       <Header />
       <Routes>
         {data.me.role === 'Client' && ClientRoutes}
-        <Route element={<Navigate to="/" replace />} />
+        {/* <Route element={<Navigate to="/" replace />} /> */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
