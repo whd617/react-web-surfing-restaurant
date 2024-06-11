@@ -5,7 +5,7 @@ import { gql, useMutation } from '@apollo/client';
 import nuberLogo from '../images/logo.svg';
 import { Button } from '../components/button';
 import { Link, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 import {
   CreateAccountMutation,
@@ -86,9 +86,11 @@ export const CreateAccount = () => {
 
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
-      <Helmet>
-        <title>Create Account | NuberEats</title>
-      </Helmet>
+      <HelmetProvider>
+        <Helmet>
+          <title>Create Account | NuberEats</title>
+        </Helmet>
+      </HelmetProvider>
       {/*  login 화면 CSS설정(핸드폰) */}
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
         <img src={nuberLogo} className="w-52 mb-5" />
