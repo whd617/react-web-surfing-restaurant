@@ -1,13 +1,12 @@
 import { gql, useLazyQuery } from '@apollo/client';
 import React, { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RESTAURANT_FRAGMENT } from '../../fragments';
 import {
   SearchRestaurantQuery,
   SearchRestaurantQueryVariables,
 } from '../../gql/graphql';
-import { HelmetProvider } from 'react-helmet-async';
 
 const SEARCH_RESTAURANT = gql`
   query searchRestaurant($input: SearchRestaurantInput!) {
@@ -27,13 +26,13 @@ const SEARCH_RESTAURANT = gql`
 export const Search = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
   const [queryReadyToStart, { loading, data, called }] = useLazyQuery<
     SearchRestaurantQuery,
     SearchRestaurantQueryVariables
   >(SEARCH_RESTAURANT);
   useEffect(() => {
-    const [_, query] = location.search.split('?/term=');
+    const [_, query] = location.search.split('?term=');
+    console.log(query);
     if (!query) {
       return navigate('/', { replace: true });
     }
@@ -48,15 +47,11 @@ export const Search = () => {
     });
   }, []);
 
-  console.log(loading, data, called);
-
   return (
     <h1>
-      <HelmetProvider>
-        <Helmet>
-          <title>Search | Nuber Eats</title>
-        </Helmet>
-      </HelmetProvider>
+      <Helmet>
+        <title>Search | Nuber Eats</title>
+      </Helmet>
       Search page
     </h1>
   );

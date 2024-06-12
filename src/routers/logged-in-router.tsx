@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Restaurants } from '../pages/client/restaurants';
 import { Header } from '../components/header';
 import { useMe } from '../hooks/useMe';
@@ -12,6 +7,7 @@ import { NotFound } from '../pages/404';
 import { ConfirmEmail } from '../pages/user/confirm-email';
 import { EditProfile } from '../pages/user/edit-profile';
 import { Search } from '../pages/client/search';
+import { Category } from '../pages/client/category';
 
 /* Route를 다수 지정할 때 key값 기입 */
 const ClientRoutes = [
@@ -20,6 +16,8 @@ const ClientRoutes = [
   <Route key={2} path="/confirm" element={<ConfirmEmail />} />,
   <Route key={3} path="/edit-profile" element={<EditProfile />} />,
   <Route key={4} path="/search" element={<Search />} />,
+  /* category의 slug data를 전달하는 방법 */
+  <Route key={5} path="/category/:slug" element={<Category />} />,
 ];
 
 export const LoggedInRouter = () => {

@@ -9,8 +9,8 @@ const config: CodegenConfig = {
     './src/gql/': {
       preset: 'client',
       presetConfig: {
-        // 예시 설정
-        gqlTagName: 'gql',
+        //fragmentMasking: false 로 두면 fragment로 지정한부분을 $fragmentRef라는 필드로 안감싸게 해주는 옵션
+        fragmentMasking: false,
       },
     },
   },
