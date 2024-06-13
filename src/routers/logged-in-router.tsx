@@ -8,6 +8,7 @@ import { ConfirmEmail } from '../pages/user/confirm-email';
 import { EditProfile } from '../pages/user/edit-profile';
 import { Search } from '../pages/client/search';
 import { Category } from '../pages/client/category';
+import { RestaurantDetail } from '../pages/client/restaurant-detail';
 
 /* Route를 다수 지정할 때 key값 기입 */
 const ClientRoutes = [
@@ -18,6 +19,7 @@ const ClientRoutes = [
   <Route key={4} path="/search" element={<Search />} />,
   /* category의 slug data를 전달하는 방법 */
   <Route key={5} path="/category/:slug" element={<Category />} />,
+  <Route key={6} path="/restaurant/:id" element={<RestaurantDetail />} />,
 ];
 
 export const LoggedInRouter = () => {
