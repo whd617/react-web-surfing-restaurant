@@ -2,14 +2,14 @@ import { gql, useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Restaurant } from '../../components/restaurant';
 import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
 import {
   RestaurantsPageQuery,
   RestaurantsPageQueryVariables,
 } from '../../gql/graphql';
-import { faHourglass1 } from '@fortawesome/free-solid-svg-icons';
+import { CategoryComponent } from '../../components/category-component';
 
 const RESTAURANTS_QUERY = gql`
   query restaurantsPage($input: RestaurantsInput!) {
@@ -50,7 +50,6 @@ export const Restaurants = () => {
       },
     },
   });
-  console.log(data);
   const onNextPageClick = () => setPage((current) => current + 1);
   const onPrevPageClick = () => setPage((current) => current - 1);
   const { register, handleSubmit, getValues } = useForm<IFormProps>();
@@ -67,15 +66,12 @@ export const Restaurants = () => {
       <Helmet>
         <title>Home | Nuber Eats</title>
       </Helmet>
-      <form
-        onSubmit={handleSubmit(onSearchSubmit)}
-        className="bg-gray-800 w-full py-40 flex items-center justify-center"
-      >
+      <form onSubmit={handleSubmit(onSearchSubmit)} className="search-bg">
         <input
           {...register('searchTerm', { required: true, min: 3 })}
           name="searchTerm"
           type="Search"
-          className="input rounded-md border-0 w-3/4 md:w-3/12"
+          className="search-input"
           placeholder="Search restaurants..."
         />
       </form>
@@ -85,18 +81,13 @@ export const Restaurants = () => {
           {/* 카테고리만의 container */}
           <div className="flex justify-around max-w-sm mx-auto ">
             {data?.allCategories.categories?.map((category) => (
-              /* Warning: Each child in a list should have a unique "key" prop -> key 값 추가 */
-              <Link key={category.id} to={`/category/${category.slug}`}>
-                <div className="flex flex-col group items-center cursor-pointer">
-                  <div
-                    className=" w-16 h-16 bg-cover group-hover:bg-gray-100 rounded-full"
-                    style={{ backgroundImage: `url(${category.coverImg})` }}
-                  ></div>
-                  <span className="mt-1 text-sm text-center font-medium">
-                    {category.name}
-                  </span>
-                </div>
-              </Link>
+              <CategoryComponent
+                id={category.id + ''}
+                name={category.name}
+                coverImg={category.coverImg + ''}
+                slug={category.slug}
+                key={category.id}
+              />
             ))}
           </div>
           <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">

@@ -5,4 +5,12 @@
   @apply focus:outline-none focus:border-gray-500 p-3 border-2 text-lg font-light border-gray-200  transition-colors;
 }
 
+.search-bg {
+  @apply bg-gray-800 w-full py-40 flex items-center justify-center;
+}
+
+.search-input {
+  @apply input rounded-md border-0 w-3/4 md:w-3/12;
+}
+
 @tailwind utilities;

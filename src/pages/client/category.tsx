@@ -5,6 +5,8 @@ import { gql, useQuery } from '@apollo/client';
 import { CateogoryQuery, CateogoryQueryVariables } from '../../gql/graphql';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
+import { CategoryComponent } from '../../components/category-component';
+import { Restaurant } from '../../components/restaurant';
 
 interface IFormProps {
   searchTerm: string;
@@ -48,13 +50,12 @@ export const Category = () => {
       },
     },
   );
-  console.log(data?.category.category);
-  const onNextPageClick = () => setPage((current) => current + 1);
   const onPrevPageClick = () => setPage((current) => current - 1);
+  const onNextPageClick = () => setPage((current) => current + 1);
 
   const navigate = useNavigate();
 
-  const onSubmit = () => {
+  const onSearchSubmit = () => {
     const { searchTerm } = getValues();
     navigate({
       pathname: '/search',
@@ -69,15 +70,65 @@ export const Category = () => {
       </Helmet>
       <form
         className="bg-gray-800 w-full py-40 flex items-center justify-center"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSearchSubmit)}
       >
         <input
           {...register('searchTerm', { required: true, min: 3 })}
-          className="input rounded-md border-0 w-3/4 md:w-3/12"
+          className="search-input"
           type="Search"
+          required
           placeholder="Search restaurants..."
         />
       </form>
+      {!loading && (
+        <div className="max-w-screen-2xl pb-20 mx-auto mt-8">
+          <div className="flex justify-around max-w-sm mx-auto">
+            <CategoryComponent
+              coverImg={data?.category.category?.coverImg + ''}
+              id={data?.category.category?.id + ''}
+              name={data?.category.category?.name + ''}
+              slug={data?.category.category?.slug + ''}
+              key={data?.category.category?.id}
+            />
+          </div>
+          <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
+            {data?.category.restaurants?.map((restaurant) => (
+              <Restaurant
+                coverImg={restaurant.coverImg}
+                id={restaurant.id + ''}
+                name={restaurant.name}
+                categoryName={restaurant.category?.name}
+                key={restaurant.id}
+              />
+            ))}
+          </div>
+          <div className="grid grid-cols-3 text-center max-w-md items-center mx-auto mt-10">
+            {page > 1 ? (
+              <button
+                className="focus:outline-none font-medium text-2xl"
+                onClick={onPrevPageClick}
+              >
+                &larr;
+              </button>
+            ) : (
+              <div></div>
+            )}
+            <span>
+              Page {page} of {data?.category.totalPages}
+            </span>
+            {page !== data?.category.totalPages ? (
+              <button
+                className="focus:outline-none font-medium text-2xl"
+                onClick={onNextPageClick}
+              >
+                &rarr;
+              </button>
+            ) : (
+              <div></div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
