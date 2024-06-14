@@ -18,6 +18,7 @@ export const Button: React.FC<IButtonProps> = ({
         : 'bg-gray-300 pointer-events-none'
     }`}
   >
+    {/* implementation: 삼항 조건 연산자(ternary operator) */}
     {loading ? 'Loading...' : actionText}
   </button>
 );
