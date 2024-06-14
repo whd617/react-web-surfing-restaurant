@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+// 여기서의 App은 test code를 작성하기 위해서 기존App.tsx를 대체
+import { App } from './components/app';
 import reportWebVitals from './reportWebVitals';
 import './styles/styles.css';
 import { ApolloProvider } from '@apollo/client';
