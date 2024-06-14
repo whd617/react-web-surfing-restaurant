@@ -7,7 +7,7 @@ import { ME_QUERY } from '../../hooks/useMe';
 
 describe('<Header />', () => {
   it('renders verify banner', async () => {
-    const { debug } = render(
+    render(
       <MockedProvider
         mocks={[
           {
