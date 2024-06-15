@@ -6,5 +6,7 @@ interface IFormErrorPropts {
 
 /* Function을 통한 error 처리하는 방법 */
 export const FormError: React.FC<IFormErrorPropts> = ({ errorMessage }) => (
-  <span className="font-medium text-red-500">{errorMessage}</span>
+  <span role="alert" className="font-medium text-red-500">
+    {errorMessage}
+  </span>
 );

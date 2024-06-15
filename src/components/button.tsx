@@ -12,6 +12,7 @@ export const Button: React.FC<IButtonProps> = ({
   actionText,
 }) => (
   <button
+    aria-label="submit-button"
     className={`text-lg focus:outline-none font-medium text-white py-4  transition-colors ${
       canClick
         ? 'bg-lime-600 hover:bg-lime-700'

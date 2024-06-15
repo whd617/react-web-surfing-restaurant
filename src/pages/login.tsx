@@ -11,7 +11,8 @@ import { authTokenVar, isLoggedInVar } from '../apollo';
 import { LOCALSTORAGE_TOKEN } from '../constants';
 
 /* mutation 적용하기 */
-const LOGIN_MUTATION = gql`
+/* mutation test를 위한 export */
+export const LOGIN_MUTATION = gql`
   mutation login($loginInput: LoginInput!) {
     login(input: $loginInput) {
       ok
@@ -100,7 +101,7 @@ export const Login = () => {
             required
             name="email"
             type="email"
-            placeholder="Eamil"
+            placeholder="Email"
             className="input"
           />
 
@@ -128,10 +129,6 @@ export const Login = () => {
             <FormError errorMessage={errors.password?.message} />
           )}
 
-          {errors.password?.type === 'minLength' && (
-            /* Function을 통한 error 처리하는 방법  */
-            <FormError errorMessage="Password must be more than 10 chars." />
-          )}
           <Button canClick={isValid} loading={loading} actionText={'Log in'} />
           {loginMutationResult?.login.error && (
             <FormError errorMessage={loginMutationResult.login.error} />
