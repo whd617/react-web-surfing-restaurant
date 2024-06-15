@@ -1,4 +1,3 @@
-import { RenderResult, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { LOGIN_MUTATION, Login } from '../login';
 import { ApolloProvider } from '@apollo/client';
@@ -6,7 +5,7 @@ import { MockApolloClient, createMockClient } from 'mock-apollo-client';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import { error } from 'console';
+import { render, screen, waitFor } from '../../test-utils';
 
 describe('<Login />', () => {
   /* mutation test하기: MockApolloClient */
@@ -15,13 +14,9 @@ describe('<Login />', () => {
   it('should render OK', async () => {
     mockedClient = createMockClient();
     render(
-      <HelmetProvider>
-        <ApolloProvider client={mockedClient}>
-          <Router>
-            <Login />
-          </Router>
-        </ApolloProvider>
-      </HelmetProvider>,
+      <ApolloProvider client={mockedClient}>
+        <Login />
+      </ApolloProvider>,
     );
     await waitFor(() => {
       expect(document.title).toBe('Login | NuberEats');
@@ -29,14 +24,10 @@ describe('<Login />', () => {
   });
 
   it('displays email validation errors', async () => {
-    const { debug } = await render(
-      <HelmetProvider>
-        <ApolloProvider client={mockedClient}>
-          <Router>
-            <Login />
-          </Router>
-        </ApolloProvider>
-      </HelmetProvider>,
+    render(
+      <ApolloProvider client={mockedClient}>
+        <Login />
+      </ApolloProvider>,
     );
     /* /email/i : regular expression */
     const email = screen.getByPlaceholderText(/email/i);
@@ -54,14 +45,10 @@ describe('<Login />', () => {
   });
 
   it('display password required errors', async () => {
-    const { debug } = render(
-      <HelmetProvider>
-        <ApolloProvider client={mockedClient}>
-          <Router>
-            <Login />
-          </Router>
-        </ApolloProvider>
-      </HelmetProvider>,
+    render(
+      <ApolloProvider client={mockedClient}>
+        <Login />
+      </ApolloProvider>,
     );
     /* /email/i : regular expression */
     const email = screen.getByPlaceholderText(/email/i);
@@ -75,14 +62,10 @@ describe('<Login />', () => {
   });
 
   it('submit form and calls mutation', async () => {
-    const { debug } = render(
-      <HelmetProvider>
-        <ApolloProvider client={mockedClient}>
-          <Router>
-            <Login />
-          </Router>
-        </ApolloProvider>
-      </HelmetProvider>,
+    render(
+      <ApolloProvider client={mockedClient}>
+        <Login />
+      </ApolloProvider>,
     );
     /* /email/i : regular expression */
     const email = screen.getByPlaceholderText(/email/i);

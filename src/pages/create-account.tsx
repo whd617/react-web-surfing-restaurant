@@ -139,10 +139,6 @@ export const CreateAccount = () => {
             <FormError errorMessage={errors.password?.message} />
           )}
 
-          {errors.password?.type === 'minLength' && (
-            /* Function을 통한 error 처리하는 방법  */
-            <FormError errorMessage="Password must be more than 10 chars." />
-          )}
           {/* UserRole 선택하기 */}
           <select
             {...register('role', { required: true })}
