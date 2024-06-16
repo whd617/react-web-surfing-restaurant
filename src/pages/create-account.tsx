@@ -14,7 +14,7 @@ import {
 } from '../gql/graphql';
 
 /* mutation 적용하기 */
-const CREATE_ACCOUNT_MUTATION = gql`
+export const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccount($createAccountInput: CreateAccountInput!) {
     createAccount(input: $createAccountInput) {
       ok
@@ -110,7 +110,7 @@ export const CreateAccount = () => {
             required
             name="email"
             type="email"
-            placeholder="Eamil"
+            placeholder="Email"
             className="input"
           />
 

@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router } from 'react-router-dom';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-const AllTheProviders: React.FC = ({ children }) => {
+const AllTheProviders: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   return (
     <HelmetProvider>
       <Router>{children}</Router>
