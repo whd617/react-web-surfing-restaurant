@@ -16,7 +16,7 @@ type Params = {
   slug: string;
 };
 
-const CATEGORY_QUERY = gql`
+export const CATEGORY_QUERY = gql`
   query cateogory($input: CategoryInput!) {
     category(input: $input) {
       ok
