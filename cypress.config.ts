@@ -7,6 +7,6 @@ export default defineConfig({
     },
     baseUrl: 'http://localhost:3000',
   },
-  viewportWidth: 1000,
+  viewportWidth: 1700,
   viewportHeight: 1000,
 });
