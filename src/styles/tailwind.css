@@ -13,4 +13,12 @@
   @apply input rounded-md border-0 w-3/4 md:w-3/12;
 }
 
+.container {
+  @apply max-w-screen-2xl mx-auto;
+}
+
+.link {
+  @apply text-lime-600 hover:underline;
+}
+
 @tailwind utilities;
