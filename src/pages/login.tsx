@@ -79,7 +79,7 @@ export const Login = () => {
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
       <HelmetProvider>
         <Helmet>
-          <title>Login | NuberEats</title>
+          <title>Login | Nuber Eats</title>
         </Helmet>
       </HelmetProvider>
       {/*  login 화면 CSS설정(핸드폰) */}
@@ -137,7 +137,7 @@ export const Login = () => {
         <div>
           New to nuber?{' '}
           <Link to="/create-account" className="text-lime-600 hover:underline">
-            Crate an Account
+            Create an Account
           </Link>
         </div>
       </div>
