@@ -98,7 +98,7 @@ export const EditProfile = () => {
   return (
     <div className="mt-52 flex flex-col justify-center items-center">
       <Helmet>
-        <title>Edit Profile | NuberEats</title>
+        <title>Edit Profile | Nuber Eats</title>
       </Helmet>
       <h4 className="font-semibold text-2xl mb-3">Edit Profile</h4>
       <form

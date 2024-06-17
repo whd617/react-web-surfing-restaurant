@@ -25,14 +25,9 @@ describe('Create Account', () => {
       const { operationName } = req.body;
       if (operationName && operationName === 'createAccount') {
         req.reply((res) => {
+          /*res.send()를 통한 fixture보내기*/
           res.send({
-            data: {
-              createAccount: {
-                ok: true,
-                error: null,
-                __typename: 'CreateAccountOutput',
-              },
-            },
+            fixture: 'auth/create-account.json',
           });
         });
       }

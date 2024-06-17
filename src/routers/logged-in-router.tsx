@@ -10,16 +10,41 @@ import { Search } from '../pages/client/search';
 import { Category } from '../pages/client/category';
 import { RestaurantDetail } from '../pages/client/restaurant-detail';
 
-/* Route를 다수 지정할 때 key값 기입 */
-const ClientRoutes = [
-  <Route key={1} path="/" element={<Restaurants />} />,
-  /* confirm page 생성 */
-  <Route key={2} path="/confirm" element={<ConfirmEmail />} />,
-  <Route key={3} path="/edit-profile" element={<EditProfile />} />,
-  <Route key={4} path="/search" element={<Search />} />,
-  /* category의 slug data를 전달하는 방법 */
-  <Route key={5} path="/category/:slug" element={<Category />} />,
-  <Route key={6} path="/restaurant/:id" element={<RestaurantDetail />} />,
+const clientRoutes = [
+  {
+    path: '/',
+    component: <Restaurants />,
+  },
+  {
+    path: '/search',
+    component: <Search />,
+  },
+  {
+    path: '/category/:slug',
+    component: <Category />,
+  },
+  {
+    path: '/restaurant/:id',
+    component: <RestaurantDetail />,
+  },
+];
+
+const commonRoutes = [
+  {
+    path: '/confirm',
+    component: <ConfirmEmail />,
+  },
+  {
+    path: '/edit-profile',
+    component: <EditProfile />,
+  },
+];
+
+const restaurantRoutes = [
+  {
+    path: '/',
+    component: <MyRestaurants />,
+  },
 ];
 
 export const LoggedInRouter = () => {
@@ -37,7 +62,28 @@ export const LoggedInRouter = () => {
     <Router>
       <Header />
       <Routes>
-        {data.me.role === 'Client' && ClientRoutes}
+        {/* client Route */}
+        {data.me.role === 'Client' &&
+          clientRoutes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={route.component}
+            />
+          ))}
+        {/* Owner Route */}
+        {data.me.role === 'Owner' &&
+          restaurantRoutes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={route.component}
+            />
+          ))}
+        {/* Common Route */}
+        {commonRoutes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.component} />
+        ))}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
