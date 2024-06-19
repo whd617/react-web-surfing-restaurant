@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql, useApolloClient, useMutation } from '@apollo/client';
 import React, { useState } from 'react';
 import {
   CreateRestaurantMutation,
@@ -9,6 +9,8 @@ import { Button } from '../../components/button';
 import { Helmet } from 'react-helmet-async';
 import { FormError } from '../../components/form-error';
 import { MY_RESTAURANTS_QUERY } from './my-restaurants';
+import { client } from '../../apollo';
+import { useNavigate } from 'react-router-dom';
 
 const CREATE_RESTAURANT = gql`
   mutation createRestaurant($input: CreateRestaurantInput!) {
@@ -28,14 +30,53 @@ interface IFormProps {
 }
 
 export const AddRestaurant = () => {
+  const client = useApolloClient();
+  // 이미지를 업로드했을 때 해당 url을 variables와 공유
+  // restaurant의 fake 버전에서 업로드된 이미지를 사용하기 위함
+  const [imageUrl, setImageUrl] = useState('');
+
+  //기존 "/" page으로 redirect
+  const navigate = useNavigate();
+
   const onCompleted = (data: CreateRestaurantMutation) => {
     const {
       createRestaurant: { ok, restaurantId },
     } = data;
     if (ok) {
+      const { file, name, categoryName, address } = getValues();
       // 레스토랑 생성 후 동작
       setUploading(false);
       // fake
+      const queryResult = client.readQuery({ query: MY_RESTAURANTS_QUERY });
+      // cache의 현재 state를 읽기
+      client.writeQuery({
+        query: MY_RESTAURANTS_QUERY,
+        data: {
+          // myRestaurants를 반환, 기존의 myRestaurants와 새로운 restaurants array가 존재
+          myRestaurants: {
+            ...queryResult.myRestaurants,
+            restaurants: [
+              {
+                address,
+                category: {
+                  name: categoryName,
+                  // typename은 기존 data와 동일하게 유지
+                  __typename: 'Category',
+                },
+                coverImg: imageUrl,
+                id: restaurantId,
+                isPromoted: false,
+                name,
+                // typename은 기존 data와 동일하게 유지
+                __typename: 'Restaurant',
+              },
+
+              ...queryResult.myRestaurants.restaurants,
+            ],
+          },
+        },
+      });
+      navigate('/');
     }
   };
 
@@ -74,7 +115,7 @@ export const AddRestaurant = () => {
           body: formBody,
         })
       ).json();
-
+      setImageUrl(coverImg);
       // createRestaurant Mutation 적용
       createRestaurantMutation({
         variables: {
@@ -90,12 +131,15 @@ export const AddRestaurant = () => {
   };
 
   return (
-    <div>
+    <div className="container flex flex-col items-center mt-52">
       <Helmet>
         <title>Add Restaurant | Nuber Eats</title>
       </Helmet>
-      <h1>Add Restaurant</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <h1 className="font-semibold text-2xl mb-3">Add Restaurant</h1>
+      <form
+        className="grid max-w-screen-sm gap-3 mt-5 w-full mb-5"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <input
           className="input"
           {...register('name', { required: 'Name is required.' })}

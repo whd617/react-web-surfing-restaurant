@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { RESTAURANT_FRAGMENT } from '../../fragments';
 import { gql, useApolloClient, useQuery } from '@apollo/client';
-import { MyRestaurantsQuery } from '../../gql/graphql';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { Restaurant } from '../../components/restaurant';
+import { MyRestaurantsQuery } from '../../gql/graphql';
 
 export const MY_RESTAURANTS_QUERY = gql`
   query myRestaurants {
@@ -21,18 +21,6 @@ export const MY_RESTAURANTS_QUERY = gql`
 
 export const MyRestaurants = () => {
   const { data } = useQuery<MyRestaurantsQuery>(MY_RESTAURANTS_QUERY);
-  const client = useApolloClient();
-  useEffect(() => {
-    // cache의 현재 state를 읽기
-    const queryResult = client.readQuery({ query: MY_RESTAURANTS_QUERY });
-    client.writeQuery({
-      query:MY_RESTAURANTS_QUERY,
-      data:{
-        ...queryResult,
-        restaurants:
-      }
-    })
-  }, []);
   return (
     <div>
       <Helmet>
