@@ -6,9 +6,10 @@ import {
   MyRestaurantQueryVariables,
 } from '../../gql/graphql';
 import { Link, useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 // graphql query 추가
-const MY_RESTAURANT_QUERY = gql`
+export const MY_RESTAURANT_QUERY = gql`
   query myRestaurant($input: MyRestaurantInput!) {
     myRestaurant(input: $input) {
       error
@@ -47,8 +48,13 @@ export const MyRestaurant = () => {
   console.log(data);
   return (
     <div>
+      <Helmet>
+        <title>
+          {data?.myRestaurant.restaurant?.name || 'Loading...'} | Nuber Eats
+        </title>
+      </Helmet>
       <img
-        className="  bg-gray-700 py-14 bg-center "
+        className=" w-full object-cover h-96 mx-auto flex flex-col items-center bg-gray-700 bg-center"
         src={data?.myRestaurant.restaurant?.coverImg}
         alt={data?.myRestaurant.restaurant?.name}
       />
@@ -56,7 +62,10 @@ export const MyRestaurant = () => {
         <h2 className="text-4xl font-medium mb-10">
           {data?.myRestaurant.restaurant?.name || 'Loading...'}
         </h2>
-        <Link to={``} className=" mr-8 text-white bg-gray-800 py-3 px-10">
+        <Link
+          to={`/restaurant/${id}/add-dish`}
+          className=" mr-8 text-white bg-gray-800 py-3 px-10"
+        >
           Add Dish &rarr;
         </Link>
         <Link to={``} className="text-white bg-lime-700 py-3 px-10">
