@@ -7,6 +7,8 @@ import {
 } from '../../gql/graphql';
 import { Link, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { Dish } from '../../components/dish';
+import { VictoryAxis, VictoryBar, VictoryChart } from 'victory';
 
 // graphql query 추가
 export const MY_RESTAURANT_QUERY = gql`
@@ -74,7 +76,40 @@ export const MyRestaurant = () => {
         <div className="mt-10">
           {data?.myRestaurant.restaurant?.menu.length === 0 ? (
             <h4 className="text-xl mb-5">Please upload a dish!</h4>
-          ) : null}
+          ) : (
+            <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
+              {/* Dish component에 React.FC에 대한 type을 지정해 줘서 해당 praps를 전달할 수 있다. */}
+              {data?.myRestaurant.restaurant?.menu.map((dish) => (
+                <Dish
+                  name={dish.name}
+                  description={dish.description}
+                  price={dish.price}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+        {/* Vitory set(그래프 제작) */}
+        <div className="mt-20 mb-10">
+          <h4 className="text-center text-2xl font-medium">Sales</h4>
+          <div className="max-w-sm w-full mx-auto">
+            <VictoryChart domainPadding={20}>
+              <VictoryAxis
+                label={'Amount of Money'}
+                dependentAxis
+                tickValues={[20, 30, 40, 50, 60]}
+              />
+              <VictoryAxis label={'Days of Life'} />
+              <VictoryBar
+                data={[
+                  { x: 10, y: 20 },
+                  { x: 20, y: 5 },
+                  { x: 35, y: 55 },
+                  { x: 45, y: 99 },
+                ]}
+              />
+            </VictoryChart>
+          </div>
         </div>
       </div>
     </div>
