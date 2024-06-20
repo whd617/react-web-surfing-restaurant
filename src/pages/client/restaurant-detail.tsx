@@ -1,8 +1,9 @@
 import { gql, useQuery } from '@apollo/client';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { RESTAURANT_FRAGMENT } from '../../fragments';
+import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
 import { RestaurantQuery, RestaurantQueryVariables } from '../../gql/graphql';
+import { Dish } from '../../components/dish';
 
 type TRestaurantParams = {
   id: string;
@@ -15,10 +16,14 @@ const RESTAURANT_QUERY = gql`
       error
       restaurant {
         ...RestaurantParts
+        menu {
+          ...DishParts
+        }
       }
     }
   }
   ${RESTAURANT_FRAGMENT}
+  ${DISH_FRAGMENT}
 `;
 
 export const RestaurantDetail = () => {
@@ -49,6 +54,18 @@ export const RestaurantDetail = () => {
         <h6 className="text-sm font-light ">
           {data?.restaurant.restaurant?.address}
         </h6>
+      </div>
+      <div className="container grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
+        {/* Dish component에 React.FC에 대한 type을 지정해 줘서 해당 praps를 전달할 수 있다. */}
+        {data?.restaurant.restaurant?.menu.map((dish) => (
+          <Dish
+            name={dish.name}
+            description={dish.description}
+            price={dish.price}
+            isCustomer={true}
+            options={dish.options}
+          />
+        ))}
       </div>
     </div>
   );
