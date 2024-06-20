@@ -1,6 +1,10 @@
 import { gql, useQuery } from '@apollo/client';
 import React from 'react';
-import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
+import {
+  DISH_FRAGMENT,
+  ORDERS_FRAGMENT,
+  RESTAURANT_FRAGMENT,
+} from '../../fragments';
 import {
   MyRestaurantQuery,
   MyRestaurantQueryVariables,
@@ -8,7 +12,16 @@ import {
 import { Link, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Dish } from '../../components/dish';
-import { VictoryAxis, VictoryBar, VictoryChart } from 'victory';
+import {
+  VictoryAxis,
+  VictoryChart,
+  VictoryLabel,
+  VictoryLine,
+  VictoryTheme,
+  VictoryTooltip,
+  VictoryVoronoiContainer,
+  VictoryZoomContainer,
+} from 'victory';
 
 // graphql query 추가
 export const MY_RESTAURANT_QUERY = gql`
@@ -21,11 +34,15 @@ export const MY_RESTAURANT_QUERY = gql`
         menu {
           ...DishParts
         }
+        orders {
+          ...OrderParts
+        }
       }
     }
   }
   ${RESTAURANT_FRAGMENT}
   ${DISH_FRAGMENT}
+  ${ORDERS_FRAGMENT}
 `;
 
 type Params = {
@@ -47,7 +64,7 @@ export const MyRestaurant = () => {
       },
     },
   );
-  console.log(data);
+
   return (
     <div>
       <Helmet>
@@ -55,6 +72,7 @@ export const MyRestaurant = () => {
           {data?.myRestaurant.restaurant?.name || 'Loading...'} | Nuber Eats
         </title>
       </Helmet>
+      <div className="checkout-container"></div>
       <img
         className=" w-full object-cover h-96 mx-auto flex flex-col items-center bg-gray-700 bg-center"
         src={data?.myRestaurant.restaurant?.coverImg}
@@ -92,21 +110,42 @@ export const MyRestaurant = () => {
         {/* Vitory set(그래프 제작) */}
         <div className="mt-20 mb-10">
           <h4 className="text-center text-2xl font-medium">Sales</h4>
-          <div className="max-w-sm w-full mx-auto">
-            <VictoryChart domainPadding={20}>
-              <VictoryAxis
-                label={'Amount of Money'}
-                dependentAxis
-                tickValues={[20, 30, 40, 50, 60]}
+          <div className="mt-10">
+            <VictoryChart
+              height={500}
+              theme={VictoryTheme.material}
+              width={window.innerWidth}
+              domainPadding={50}
+              containerComponent={<VictoryVoronoiContainer />}
+            >
+              <VictoryLine
+                labels={({ datum }) => `$${datum.y}`} // lable을 어떤 방식으로 그릴 지와 관련
+                labelComponent={
+                  <VictoryTooltip
+                    style={{ fontSize: 18 } as any}
+                    renderInPortal
+                    dy={-20} // 수직 방향으로 점으로부터 얼마나 떨어져 있는지를 나타냄
+                  />
+                }
+                data={data?.myRestaurant.restaurant?.orders.map((order) => ({
+                  x: order.createdAt,
+                  y: order.total,
+                }))}
+                interpolation="natural"
+                style={{
+                  data: {
+                    strokeWidth: 5,
+                  },
+                }}
               />
-              <VictoryAxis label={'Days of Life'} />
-              <VictoryBar
-                data={[
-                  { x: 10, y: 20 },
-                  { x: 20, y: 5 },
-                  { x: 35, y: 55 },
-                  { x: 45, y: 99 },
-                ]}
+
+              <VictoryAxis
+                tickLabelComponent={<VictoryLabel renderInPortal />}
+                style={{ tickLabels: { fontSize: 20 } as any }}
+                tickFormat={(tick: any) =>
+                  new Date(tick).toLocaleDateString('ko')
+                }
+                label="Days"
               />
             </VictoryChart>
           </div>
