@@ -39,15 +39,13 @@ export const MyRestaurants = () => {
         ) : (
           <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
             {data?.myRestaurants?.restaurants?.map((restaurant) => (
-              <div>
-                <Restaurant
-                  key={restaurant.id}
-                  id={restaurant.id + ''}
-                  coverImg={restaurant.coverImg}
-                  name={restaurant.name}
-                  categoryName={restaurant.category?.name}
-                />
-              </div>
+              <Restaurant
+                key={restaurant.id}
+                id={restaurant.id + ''}
+                coverImg={restaurant.coverImg}
+                name={restaurant.name}
+                categoryName={restaurant.category?.name}
+              />
             ))}
           </div>
         )}

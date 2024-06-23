@@ -44,7 +44,7 @@ export const Login = () => {
     if (ok && token) {
       // localStorage에 token 설정
       localStorage.setItem(LOCALSTORAGE_TOKEN, token);
-      // authToken: reactiv variable(apollo.ts)에 token을 업데이트
+      // authToken: reactive variable(apollo.ts)에 token을 업데이트
       authTokenVar(token);
       // isLoggedInVar: reactiv variable(apollo.ts)도 업데이트
       isLoggedInVar(true);

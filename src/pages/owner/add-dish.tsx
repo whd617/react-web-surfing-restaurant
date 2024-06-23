@@ -19,7 +19,7 @@ const CREATE_DISH_MUTATION = gql`
   }
 `;
 
-type Prams = {
+type Params = {
   restaurantId: string;
 };
 
@@ -32,13 +32,13 @@ interface IForm {
 }
 
 export const AddDish = () => {
-  const { restaurantId } = useParams<Prams>();
+  const { restaurantId } = useParams<Params>();
 
   const navigate = useNavigate();
 
   const restaurantIdNum = Number(restaurantId);
   // mutation이 호출되면 refetch
-  const [createDishMutation, { data, error, loading }] = useMutation<
+  const [createDishMutation, { loading }] = useMutation<
     CreateDishMutation,
     CreateDishMutationVariables
   >(CREATE_DISH_MUTATION, {
@@ -77,18 +77,22 @@ export const AddDish = () => {
         extra: +rest[`${theId}-optionExtra-${choiceId}-choiceExtra`],
       })),
     }));
-    const foodPrice = Number(price);
-    createDishMutation({
+
+    console.log(JSON.stringify(optionsObject, null, 2));
+
+    const good = createDishMutation({
       variables: {
         input: {
           description,
           name,
-          price: foodPrice,
+          price: +price,
           restaurantId: restaurantIdNum,
           options: optionsObject,
         },
       },
     });
+
+    console.log(good);
 
     navigate(-1);
   };
@@ -123,6 +127,7 @@ export const AddDish = () => {
     unregister(`${optionId}-optionName-${choiceId}-choiceName`);
     unregister(`${optionId}-optionExtra-${choiceId}-choiceExtra`);
   };
+
   return (
     <div className="container flex flex-col items-center mt-52">
       <Helmet>

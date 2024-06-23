@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import React from 'react';
 import {
   DISH_FRAGMENT,
@@ -6,6 +6,8 @@ import {
   RESTAURANT_FRAGMENT,
 } from '../../fragments';
 import {
+  CreateDishMutation,
+  CreateDishMutationVariables,
   MyRestaurantQuery,
   MyRestaurantQueryVariables,
 } from '../../gql/graphql';
@@ -20,7 +22,6 @@ import {
   VictoryTheme,
   VictoryTooltip,
   VictoryVoronoiContainer,
-  VictoryZoomContainer,
 } from 'victory';
 
 // graphql query 추가
@@ -102,6 +103,7 @@ export const MyRestaurant = () => {
                   name={dish.name}
                   description={dish.description}
                   price={dish.price}
+                  options={dish.options}
                 />
               ))}
             </div>
