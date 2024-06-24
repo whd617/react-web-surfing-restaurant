@@ -14,6 +14,8 @@ import { AddRestaurant } from '../pages/owner/add-restaurants';
 import { MyRestaurant } from '../pages/owner/my-restaurant';
 import { AddDish } from '../pages/owner/add-dish';
 import { Order } from '../pages/order';
+import { Dashboard } from '../pages/driver/dashboard';
+import { UserRole } from '../gql/graphql';
 
 const clientRoutes = [
   {
@@ -65,6 +67,13 @@ const restaurantRoutes = [
   { path: '/restaurant/:restaurantId/add-dish', component: <AddDish /> },
 ];
 
+const driverRoutes = [
+  {
+    path: '/',
+    component: <Dashboard />,
+  },
+];
+
 export const LoggedInRouter = () => {
   /* hook을 활용한 user data 사용 */
   const { data, loading, error } = useMe();
@@ -81,7 +90,7 @@ export const LoggedInRouter = () => {
       <Header />
       <Routes>
         {/* client Route */}
-        {data.me.role === 'Client' &&
+        {data.me.role === UserRole.Client &&
           clientRoutes.map((route) => (
             <Route
               key={route.path}
@@ -90,7 +99,16 @@ export const LoggedInRouter = () => {
             />
           ))}
         {/* Owner Route */}
-        {data.me.role === 'Owner' &&
+        {data.me.role === UserRole.Owner &&
+          restaurantRoutes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={route.component}
+            />
+          ))}
+        {/* Driver Route */}
+        {data.me.role === UserRole.Delivery &&
           restaurantRoutes.map((route) => (
             <Route
               key={route.path}
