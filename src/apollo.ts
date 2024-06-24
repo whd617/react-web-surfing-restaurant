@@ -24,7 +24,7 @@ const wsLink = new GraphQLWsLink(
   createClient({
     url:
       process.env.NODE_ENV === 'production'
-        ? 'wss://web-restaurants-backend-78a7ec1afcae.herokuapp.com'
+        ? 'wss://web-restaurants-backend-78a7ec1afcae.herokuapp.com/graphql'
         : 'ws://localhost:4000/graphql',
     connectionParams: {
       'x-jwt': authTokenVar() || '',
@@ -36,7 +36,7 @@ const wsLink = new GraphQLWsLink(
 const httpLink = createHttpLink({
   uri:
     process.env.NODE_ENV === 'production'
-      ? 'https://web-restaurants-backend-78a7ec1afcae.herokuapp.com'
+      ? 'https://web-restaurants-backend-78a7ec1afcae.herokuapp.com/graphql'
       : 'http://localhost:4000/graphql',
 });
 
