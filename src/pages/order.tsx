@@ -9,6 +9,7 @@ import {
 } from '../gql/graphql';
 import { Helmet } from 'react-helmet-async';
 import { FULL_ORDER_FRAGMENT } from '../fragments';
+import { useMe } from '../hooks/useMe';
 
 type IParams = {
   id: string;
@@ -38,7 +39,7 @@ const ORDER_SUBSCRIPTION = gql`
 
 export const Order = () => {
   const params = useParams<IParams>();
-
+  const { data: userData } = useMe();
   const paramsId = Number(params.id);
 
   const { data, subscribeToMore } = useQuery<
@@ -100,19 +101,31 @@ export const Order = () => {
           </div>
           <div className="border-t pt-5 border-gray-700 ">
             Delivery To: {''}
+            <span className="font-medium">
+              {data?.getOrder.order?.customer?.email}
+            </span>
           </div>
-          <span className="font-medium">
-            {data?.getOrder.order?.customer?.email}
-          </span>
           <div className="border-t border-b py-5 border-gray-700">
             Driver:{''}
             <span className="font-medium">
-              {data?.getOrder.order?.driver?.email}
+              {data?.getOrder.order?.driver?.email || 'Not yet'}
             </span>
           </div>
-          <span className=" text-center mt-5 mb-3  text-2xl text-lime-600">
-            Status: {data?.getOrder.order?.status}
-          </span>
+          {userData?.me.role === 'Client' && (
+            <span className=" text-center mt-5 mb-3  text-2xl text-lime-600">
+              Status: {data?.getOrder.order?.status}
+            </span>
+          )}
+          {userData?.me.role === 'Owner' && (
+            <>
+              {data?.getOrder.order?.status === 'Pending' && (
+                <button className="btn">Accept Order</button>
+              )}
+              {data?.getOrder.order?.status === 'Cooking' && (
+                <button className="btn">Order Cooked</button>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
