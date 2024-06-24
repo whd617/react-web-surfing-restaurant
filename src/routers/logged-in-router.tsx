@@ -109,7 +109,7 @@ export const LoggedInRouter = () => {
           ))}
         {/* Driver Route */}
         {data.me.role === UserRole.Delivery &&
-          restaurantRoutes.map((route) => (
+          driverRoutes.map((route) => (
             <Route
               key={route.path}
               path={route.path}
