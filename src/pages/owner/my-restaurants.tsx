@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RESTAURANT_FRAGMENT } from '../../fragments';
-import { gql, useApolloClient, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { Restaurant } from '../../components/restaurant';
