@@ -22,7 +22,10 @@ export const authTokenVar = makeVar(token);
 // Apollo Subscription을 사용하기 위한 웹소켓 통신
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://localhost:4000/graphql',
+    url:
+      process.env.NODE_ENV === 'production'
+        ? 'wss://web-restaurants-backend-78a7ec1afcae.herokuapp.com/graphql'
+        : 'ws://localhost:4000/graphql',
     connectionParams: {
       'x-jwt': authTokenVar() || '',
     },
@@ -30,7 +33,12 @@ const wsLink = new GraphQLWsLink(
 );
 
 // link는 연결할 수 있는 것들을 말함(http, auth, web sockets 링크)
-const httpLink = createHttpLink({ uri: 'http://localhost:4000/graphql' });
+const httpLink = createHttpLink({
+  uri:
+    process.env.NODE_ENV === 'production'
+      ? 'https://web-restaurants-backend-78a7ec1afcae.herokuapp.com/graphql'
+      : 'http://localhost:4000/graphql',
+});
 
 // link는 연결할 수 있는 것들을 말함(http, auth, web sockets 링크)
 const authLink = setContext((_, { headers }) => {
