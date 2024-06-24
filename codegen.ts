@@ -2,10 +2,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema:
-    process.env.NODE_ENV === 'production'
-      ? 'https://web-restaurants-backend-78a7ec1afcae.herokuapp.com/graphql'
-      : 'http://localhost:4000/graphql',
+  schema: 'http://localhost:4000/graphql',
   documents: ['src/**/*.{tsx,ts}'],
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {
