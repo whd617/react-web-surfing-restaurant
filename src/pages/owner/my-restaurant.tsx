@@ -149,10 +149,14 @@ export const MyRestaurant = () => {
                     dy={-20} // 수직 방향으로 점으로부터 얼마나 떨어져 있는지를 나타냄
                   />
                 }
-                data={data?.myRestaurant.restaurant?.orders.map((order) => ({
-                  x: order.createdAt,
-                  y: order.total,
-                }))}
+                data={
+                  data?.myRestaurant.restaurant?.orders
+                    ? data?.myRestaurant.restaurant?.orders.map((order) => ({
+                        x: order.createdAt,
+                        y: order.total,
+                      }))
+                    : []
+                }
                 interpolation="natural"
                 style={{
                   data: {

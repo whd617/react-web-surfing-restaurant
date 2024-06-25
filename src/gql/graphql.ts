@@ -156,7 +156,7 @@ export type Dish = {
   options?: Maybe<Array<DishOption>>;
   photo?: Maybe<Scalars['String']['output']>;
   price: Scalars['Int']['output'];
-  restaurant?: Maybe<Restaurant>;
+  restaurant: Restaurant;
   updatedAt: Scalars['DateTime']['output'];
 };
 
@@ -504,7 +504,7 @@ export type Restaurant = {
   isPromoted: Scalars['Boolean']['output'];
   menu: Array<Dish>;
   name: Scalars['String']['output'];
-  orders: Array<Order>;
+  orders?: Maybe<Array<Order>>;
   owner: User;
   promotedUntil?: Maybe<Scalars['DateTime']['output']>;
   updatedAt: Scalars['DateTime']['output'];
@@ -724,7 +724,7 @@ export type MyRestaurantQueryVariables = Exact<{
 }>;
 
 
-export type MyRestaurantQuery = { __typename?: 'Query', myRestaurant: { __typename?: 'MyRestaurantOutput', error?: string | null, ok: boolean, restaurant?: { __typename?: 'Restaurant', id: number, name: string, coverImg: string, address: string, isPromoted: boolean, menu: Array<{ __typename?: 'Dish', id: number, name: string, price: number, photo?: string | null, description: string, options?: Array<{ __typename?: 'DishOption', name: string, extra?: number | null, choices?: Array<{ __typename?: 'DishChoice', name: string, extra?: number | null }> | null }> | null }>, orders: Array<{ __typename?: 'Order', id: number, createdAt: any, total?: number | null }>, category?: { __typename?: 'Category', name: string } | null } | null } };
+export type MyRestaurantQuery = { __typename?: 'Query', myRestaurant: { __typename?: 'MyRestaurantOutput', error?: string | null, ok: boolean, restaurant?: { __typename?: 'Restaurant', id: number, name: string, coverImg: string, address: string, isPromoted: boolean, menu: Array<{ __typename?: 'Dish', id: number, name: string, price: number, photo?: string | null, description: string, options?: Array<{ __typename?: 'DishOption', name: string, extra?: number | null, choices?: Array<{ __typename?: 'DishChoice', name: string, extra?: number | null }> | null }> | null }>, orders?: Array<{ __typename?: 'Order', id: number, createdAt: any, total?: number | null }> | null, category?: { __typename?: 'Category', name: string } | null } | null } };
 
 export type PendingOrdersSubscriptionVariables = Exact<{ [key: string]: never; }>;
 

@@ -66,9 +66,10 @@ export const AddDish = () => {
     mode: 'onChange',
     shouldUnregister: true,
   });
-
+  console.log(getValues());
   const onSumit = () => {
     const { description, name, price, ...rest } = getValues();
+
     const optionsObject = optionsNumber.map((theId) => ({
       name: rest[`${theId}-optionName`],
       extra: +rest[`${theId}-optionExtra`],
@@ -77,9 +78,6 @@ export const AddDish = () => {
         extra: +rest[`${theId}-optionExtra-${choiceId}-choiceExtra`],
       })),
     }));
-
-    console.log(JSON.stringify(optionsObject, null, 2));
-
     const good = createDishMutation({
       variables: {
         input: {
@@ -91,14 +89,12 @@ export const AddDish = () => {
         },
       },
     });
-
-    console.log(good);
-
     navigate(-1);
   };
 
   const [optionsNumber, setOptionsNumber] = useState<number[]>([]);
   const [choices, setChoices] = useState<{ [key: number]: number[] }>({});
+  console.log(choices);
   const onAddOptionsClick = () => {
     /* Add Dish Option버튼을 클릭할 때마다 Array 형태이면서 그안에 현재 날짜로 생성 됨 */
     setOptionsNumber((current) => [Date.now(), ...current]);
@@ -127,7 +123,6 @@ export const AddDish = () => {
     unregister(`${optionId}-optionName-${choiceId}-choiceName`);
     unregister(`${optionId}-optionExtra-${choiceId}-choiceExtra`);
   };
-
   return (
     <div className="container flex flex-col items-center mt-52">
       <Helmet>
